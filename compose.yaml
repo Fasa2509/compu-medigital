@@ -1,0 +1,36 @@
+services:
+  mysql-db:
+    container_name: compu-sql-db
+    image: mysql:8.0
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+    ports:
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+
+  py-server:
+    container_name: compu-py-server
+    build: .
+    volumes:
+      - ./:/app
+    depends_on:
+      - mysql-db
+    ports:
+    - 3333:5000
+
+  phpmyadmin:
+    container_name: compu-phpmyadmin
+    image: phpmyadmin:5.2.1
+    depends_on:
+      - mysql-db
+    restart: on-failure:6
+    # expose:
+    #   - 80
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_USER=root
+      - PMA_PASSWORD=123456
+      - PMA_HOST=mysql-db

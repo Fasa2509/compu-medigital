@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock title %}</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;700&family=Poppins:wght@200;300;400;500;600&display=swap");
+
+        :root {
+            --main-color: #46d1d3;
+            --main-color-hover: rgb(60, 181, 183);
+            --secondary-color: #e55;
+            --secondary-color-hover: rgb(227, 73, 73);
+            --header-height: 68px;
+
+            --success-color: rgb(0, 201, 0);
+            --error-color: rgb(255, 55, 55);
+            --warning-color: rgb(245, 255, 50);
+            --info-color: rgb(79, 108, 255);
+
+            background-color: #fcfcfc;
+            font-size: 13px;
+            color: #343434;
+        }
+
+        *,
+        *::after,
+        *::before {
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", "Montserrat", Arial, Helvetica, sans-serif;
+            /*font-size: 1rem;*/
+        }
+
+        .content-island {
+            box-shadow: 0 2px 10px -6px #8d8d8daa;
+            background-color: #fff;
+        }
+
+        @media screen and (min-width: 480px) {
+            :root {
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (min-width: 776px) {
+            :root {
+                font-size: 16px;
+            }
+        }
+
+        @media screen and (min-width: 990px) {
+            :root {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        {% block children %} {% endblock children %}
+    </section>
+</body>
+
+</html>

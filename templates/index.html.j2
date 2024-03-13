@@ -1,0 +1,15 @@
+{% extends "layout.html.j2" %}
+
+{% block children %}
+{% block title %} Compu Trabajo {% endblock title %}
+{% for usuario in users %}
+<div>
+    <span>ID: {{usuario[0]}}</span>
+    <span>Nombre: {{usuario[1]}}</span>
+    <span>Nacimiento: {{usuario[2]}}</span>
+    <span>Estatura: {{usuario[3]}}</span>
+</div>
+{% endfor %}
+{% if users|length < 3 %} <span>Whaos hay pocos usuarios</span>
+    {% endif %}
+    {% endblock children %}
