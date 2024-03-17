@@ -85,7 +85,7 @@ Médico
 
     const backTo = new URLSearchParams(window.location.search).get("backTo") || "/";
 
-    if (backTo) $linkBack.setAttribute("href", window.location.origin + backTo)
+    if (backTo !== "/") $linkBack.setAttribute("href", window.location.origin + backTo)
 </script>
 <style>
     .main-container {

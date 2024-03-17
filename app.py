@@ -312,7 +312,7 @@ def reporte_medico(medico_ci: int):
             consulta_id,
             paciente_id
             FROM diagnostico
-            WHERE consulta_id in {tuple([el[0] for el in consultas] if len(consultas) > 1 else f"{consultas[0][0]}" if len(consultas) == 0 else "()")}
+            WHERE consulta_id in {str(tuple([el[0] for el in consultas])).rstrip(",)") + ")" if consultas and len(consultas) > 0 else "()"}
             """,
         ).fetchall()
 
@@ -323,7 +323,7 @@ def reporte_medico(medico_ci: int):
         duracion,
         diagnostico_id
         FROM tratamiento
-        WHERE diagnostico_id in {tuple([el[0] for el in diagnosticos])}
+        WHERE diagnostico_id in {str(tuple([el[0] for el in diagnosticos])).rstrip(",)") + ")" if diagnosticos and len(diagnosticos) > 0 else "()"}
         """,
     ).fetchall()
 
@@ -401,7 +401,7 @@ def reporte_paciente(paciente_ci: int):
         consulta_id,
         paciente_id
         FROM diagnostico
-        WHERE consulta_id in {tuple([el[0] for el in consultas]) if len(consultas) > 1 else f"({consultas[0][0]})" if len(consultas) == 0 else "()"}
+        WHERE consulta_id in {str(tuple([el[0] for el in consultas])).rstrip(",)") + ")" if consultas and len(consultas) > 0 else "()"}
         """,
     ).fetchall()
 
@@ -412,7 +412,7 @@ def reporte_paciente(paciente_ci: int):
         duracion,
         diagnostico_id
         FROM tratamiento
-        WHERE diagnostico_id in {tuple([el[0] for el in diagnosticos])}
+        WHERE diagnostico_id in {str(tuple([el[0] for el in diagnosticos])).rstrip(",)") + ")" if diagnosticos and len(diagnosticos) > 0 else "()"}
         """,
     ).fetchall()
 
@@ -481,7 +481,7 @@ def medicos_malos():
 
     diagnosticos = cursor.execute(f"""SELECT
                     afectacion, paciente_id, consulta_id
-                    FROM diagnostico WHERE consulta_id in {tuple(consultas_malas) if len(consultas_malas) > 1 else f"({consultas_malas[0]})"} ORDER BY paciente_id""").fetchall()
+                    FROM diagnostico WHERE consulta_id in {str(tuple(consultas_malas)).rstrip(",)") + ")" if consultas_malas and len(consultas_malas) > 0 else f"()"} ORDER BY paciente_id""").fetchall()
 
     if len(diagnosticos) == 0:
         db.close()
@@ -510,7 +510,7 @@ def medicos_malos():
         usuario.fecha_creacion as fecha_creacion,
         medico.especialidad as especialidad
         FROM medico INNER JOIN usuario ON usuario.id = medico.usuario_id
-        WHERE medico.id in (SELECT medico_id FROM consulta WHERE id in {tuple(consultas_malas)})""").fetchall()
+        WHERE medico.id in (SELECT medico_id FROM consulta WHERE id in {str(tuple(consultas_malas)).rstrip(",)") + ")" if consultas_malas and len(consultas_malas) > 0 else "()"})""").fetchall()
 
     db.close()
 
@@ -576,7 +576,7 @@ def tratamientos_efectivos():
 
     diagnosticos = cursor.execute(f"""SELECT
                     id
-                    FROM diagnostico WHERE consulta_id in {tuple(consultas_exitosas) if len(consultas_exitosas) > 1 else f"({consultas_exitosas[0]})"}""").fetchall()
+                    FROM diagnostico WHERE consulta_id in {str(tuple(consultas_exitosas)).rstrip(",)") + ")" if len(consultas_exitosas) > 0 else "()"}""").fetchall()
 
     if len(diagnosticos) == 0:
         db.close()
@@ -756,6 +756,15 @@ def setup():
         return ApiResponse(error=False, message=["Base de datos iniciada"]).__dict__, 200
     except Exception as err:
         return ApiErrorHandler(err, "Ocurrió un error iniciando la DB").__dict__, 400
+
+
+@app.errorhandler(404)
+def not_found(e):
+    token = request.cookies.get("auth-cookie")
+
+    session = decode_jwt(token) if token else None
+
+    return render_template("404.html.j2", session=session)
 
 
 if __name__ == "__main__":

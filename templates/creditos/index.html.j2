@@ -4,24 +4,19 @@
 Créditos
 {% endblock title %}
 {% block children %}
-<p style="margin: 2rem 2rem 0;">Sint cillum consectetur veniam magna dolor aliqua officia commodo quis consectetur.
-    Laboris
-    enim cupidatat minim
-    nisi. Sunt veniam labore adipisicing ut deserunt dolor do commodo eiusmod laboris pariatur.</p>
+<p style="margin: 2rem 2rem 0;">Medigital es un proyecto final universitario presentado por estudiantes de Ingeniería
+    Eléctrica en la Universidad de Carabobo. Cuenta con los requerimientos solicitados por el profesor y fue construido
+    utilizando Python, Flask, SQLite, Pydantic, entre otras librerías.</p>
 <section class="credit-container">
     <div class="text">
         <h3>Realizado por...</h3>
-        <p>Do reprehenderit sint exercitation ad. Velit aute nulla id laborum fugiat. Sunt exercitation eiusmod in
-            reprehenderit laborum laborum ex cillum nostrud esse nostrud aliquip. Cupidatat mollit laboris elit non
-            proident anim. Sit officia mollit est ullamco nulla. Cupidatat consectetur eu fugiat proident officia velit.
-        </p>
+        <p><b>Estudiante Fasanella Miguel</b> C.I.: 28.209.802</p>
+        <p><b>Estudiante Silva Jhon</b> C.I.: 29.503.842</p>
     </div>
     <div class="text">
         <h3>Corregido por...</h3>
-        <p>Do reprehenderit sint exercitation ad. Velit aute nulla id laborum fugiat. Sunt exercitation eiusmod in
-            reprehenderit laborum laborum ex cillum nostrud esse nostrud aliquip. Cupidatat mollit laboris elit non
-            proident anim. Sit officia mollit est ullamco nulla. Cupidatat consectetur eu fugiat proident officia velit.
-        </p>
+        <p><b>Prof. Victor Esteller</b>, encargado de la asignatura Computación II en la Facultad de Ingeniería de la
+            Universidad de Carabobo.</p>
     </div>
 </section>
 <style>
@@ -39,6 +34,11 @@ Créditos
     @media screen and (min-width: 776px) {
         .credit-container {
             flex-direction: row;
+        }
+
+        .credit-container .text {
+            flex-grow: 1;
+            min-width: 50%;
         }
     }
 </style>

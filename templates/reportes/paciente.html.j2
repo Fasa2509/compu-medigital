@@ -59,9 +59,17 @@ Paciente
     <h3 style="margin: 1rem 2rem;">Vaya, no se encontró paciente por esa C.I.</h3>
     {% endif %}
     <div style="min-height: 5rem; display: flex; align-items: center">
-        <a href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver atrás</a>
+        <a id="backTo" href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver
+            atrás</a>
     </div>
 </section>
+<script>
+    const $linkBack = document.querySelector("#backTo")
+
+    const backTo = new URLSearchParams(window.location.search).get("backTo") || "/";
+
+    if (backTo !== "/") $linkBack.setAttribute("href", window.location.origin + backTo)
+</script>
 <style>
     .main-container {
         padding: 1rem 2rem;
