@@ -18,7 +18,7 @@ class Consulta(BaseConsulta):
     administrativo_id: int
 
 
-def ConsultaFactory(data: list[str]) -> dict[str, str | int | datetime.datetime]:
+def ConsultaFactory(data):
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
@@ -32,7 +32,7 @@ def ConsultaFactory(data: list[str]) -> dict[str, str | int | datetime.datetime]
     }
 
 
-def ConsultaFactoryDates(data: list[str]) -> dict[str, str | int | datetime.datetime]:
+def ConsultaFactoryDates(data):
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
@@ -46,7 +46,7 @@ def ConsultaFactoryDates(data: list[str]) -> dict[str, str | int | datetime.date
     }
 
 
-def ConsultaFactoryInt(data: list[str]) -> Consulta:
+def ConsultaFactoryInt(data):
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return Consulta(
@@ -74,7 +74,3 @@ class NuevaConsulta(BaseConsulta):
         if val < get_unix_now():
             raise ValueError("La fecha no es válida")
         return val
-
-
-# print(get_unix_now()) # => 1710100512
-# print(get_then_unix(2024, 5, 12, 15, 30)) # => 1715542200
