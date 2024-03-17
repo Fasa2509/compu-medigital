@@ -705,6 +705,7 @@ def login_request():
             db.close()
             raise ParsingException(
                 ["No se encontró información referente al usuario"])
+
         res = make_response(ApiResponsePayload(error=False, message=[
                             "Inicio de sesión exitoso"], payload=usuario).__dict__)
 
@@ -747,7 +748,8 @@ def setup():
     try:
         p = request.args.get("p")
 
-        if not p or p != config.get("SETUP_PASSWORD"):
+        # if not p or p != config.get("SETUP_PASSWORD"):
+        if not p or p != "extremadamenteseguraclave2":
             return ApiResponse(error=True, message=["Clave inválida"]).__dict__, 400
 
         setUpDatabase()
@@ -767,4 +769,4 @@ def not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=5000)

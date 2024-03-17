@@ -6,7 +6,7 @@ config = dotenv_values(".env")
 
 def encode_jwt(payload):
     secret = config.get("JWT_SECRET")
-
+    secret = "extremadamenteseguraclave"
     if not secret:
         raise Exception()
 
@@ -15,7 +15,7 @@ def encode_jwt(payload):
 
 def decode_jwt(chars):
     secret = config.get("JWT_SECRET")
-
+    secret = "extremadamenteseguraclave"
     if not secret:
         raise Exception()
 
