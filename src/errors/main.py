@@ -61,7 +61,7 @@ class ValidationException(CustomException):
         self.name = LocalExceptions.ValidationException
 
 
-def ApiErrorHandler(err: Exception, defaultMessage) -> ApiResponse:
+def ApiErrorHandler(err: Exception, defaultMessage):
 
     print(err)
 

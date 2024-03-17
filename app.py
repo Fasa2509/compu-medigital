@@ -705,7 +705,6 @@ def login_request():
             db.close()
             raise ParsingException(
                 ["No se encontró información referente al usuario"])
-
         res = make_response(ApiResponsePayload(error=False, message=[
                             "Inicio de sesión exitoso"], payload=usuario).__dict__)
 
@@ -768,4 +767,4 @@ def not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=5000, debug=True)

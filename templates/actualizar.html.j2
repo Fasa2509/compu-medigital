@@ -120,7 +120,7 @@ Actualizar mis datos
         }
 
         // TODO
-        const res = await fetch(`http://localhost:5000/api/${$direccion ? "paciente" : $especialidad ? "medico" : "administrativo"}`, {
+        const res = await fetch(`https://compu-medigital.vercel.app/api/${$direccion ? "paciente" : $especialidad ? "medico" : "administrativo"}`, {
             method: "PUT",
             body: JSON.stringify(body),
             headers: {

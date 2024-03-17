@@ -19,7 +19,7 @@ class Consulta(BaseConsulta):
     administrativo_id: int
 
 
-def ConsultaFactory(data: List[str]) -> Dict[str, Union[str, int, datetime.datetime]]:
+def ConsultaFactory(data: List[str]):
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
@@ -33,7 +33,7 @@ def ConsultaFactory(data: List[str]) -> Dict[str, Union[str, int, datetime.datet
     }
 
 
-def ConsultaFactoryDates(data: List[str]) -> Dict[str, str | int | datetime.datetime]:
+def ConsultaFactoryDates(data: List[str]):
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
@@ -47,7 +47,7 @@ def ConsultaFactoryDates(data: List[str]) -> Dict[str, str | int | datetime.date
     }
 
 
-def ConsultaFactoryInt(data: List[str]) -> Consulta:
+def ConsultaFactoryInt(data: List[str]):
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return Consulta(
