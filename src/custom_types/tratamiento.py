@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -30,7 +31,7 @@ class BaseTratamiento(BaseModel):
 class Tratamiento(BaseTratamiento):
     id: int
     indicaciones: str
-    duracion: int | None
+    duracion: Optional[int]
     diagnostico_id: int
 
 
@@ -60,5 +61,5 @@ def TratamientoFactoryDates(data: list[str]):
 
 class NuevoTratamiento(BaseTratamiento):
     indicaciones: str
-    duracion: int | None
+    duracion: Optional[int]
     diagnostico_id: int

@@ -1,5 +1,5 @@
 import datetime
-from typing import Annotated
+from typing import Annotated, Optional
 from annotated_types import Gt
 from pydantic import BaseModel
 
@@ -20,7 +20,7 @@ class Medico(BaseMedico):
     nacimiento: int
     fecha_creacion: int
     especialidad: str
-    usuario_id: int | None = None
+    usuario_id: Optional[int] = None
 
 
 def MedicoFactory(data: list[str]):
@@ -76,4 +76,4 @@ class ActualizarMedico(BaseMedico):
     ci: Annotated[int, Gt(1_000_000)]
     telefono: str
     especialidad: str
-    usuario_id: int | None = None
+    usuario_id: Optional[int] = None

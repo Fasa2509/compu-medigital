@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 from annotated_types import Gt
 from pydantic import BaseModel, field_validator
 
@@ -27,8 +27,8 @@ class NuevoUsuario(BaseUsuario):
     correo: str
     genero: Literal["F", "M", "O"]
     nacimiento: Annotated[int, Gt(0)]
-    fecha_creacion: int | None = get_unix_now()
-    clave: str | None = None
+    fecha_creacion: Optional[int] = get_unix_now()
+    clave: Optional[str] = None
 
 
 class ActualizarUsuario(BaseUsuario):

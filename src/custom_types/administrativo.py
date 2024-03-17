@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 from typing import Annotated
 from annotated_types import Gt
 from pydantic import BaseModel
@@ -20,7 +21,7 @@ class Administrativo(BaseAdministrativo):
     nacimiento: int
     fecha_creacion: int
     oficina: str
-    usuario_id: int | None = None
+    usuario_id: Optional[int] = None
     medico_id: int
 
 
@@ -78,4 +79,4 @@ class ActualizarAdministrativo(BaseAdministrativo):
     ci: Annotated[int, Gt(1_000_000)]
     telefono: str
     oficina: str
-    usuario_id: int | None = None
+    usuario_id: Optional[int] = None

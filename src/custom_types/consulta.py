@@ -1,7 +1,8 @@
 import datetime
+from typing import Optional
 from pydantic import BaseModel, field_validator
 
-from src.helpers.dates import get_datetime_from_unix, get_then_unix, get_unix_now
+from src.helpers.dates import get_datetime_from_unix, get_unix_now
 
 
 class BaseConsulta(BaseModel):
@@ -18,7 +19,7 @@ class Consulta(BaseConsulta):
     administrativo_id: int
 
 
-def ConsultaFactory(data):
+def ConsultaFactory(data: list[str]) -> dict[str, str | int | datetime.datetime]:
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
@@ -32,7 +33,7 @@ def ConsultaFactory(data):
     }
 
 
-def ConsultaFactoryDates(data):
+def ConsultaFactoryDates(data: list[str]) -> dict[str, str | int | datetime.datetime]:
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
@@ -46,7 +47,7 @@ def ConsultaFactoryDates(data):
     }
 
 
-def ConsultaFactoryInt(data):
+def ConsultaFactoryInt(data: list[str]) -> Consulta:
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return Consulta(
@@ -62,7 +63,7 @@ def ConsultaFactoryInt(data):
 
 class NuevaConsulta(BaseConsulta):
     fecha_consulta: int
-    fecha_creacion: int | None = get_unix_now()
+    fecha_creacion: Optional[int] = get_unix_now()
     coste: float
     paciente_id: int
     medico_id: int

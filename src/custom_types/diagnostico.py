@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 from pydantic import BaseModel
 
 from src.helpers.dates import get_datetime_from_unix, get_then_unix, get_unix_now
@@ -48,4 +49,4 @@ class NuevoDiagnostico(BaseDiagnostico):
     observaciones: str
     consulta_id: int
     paciente_id: int
-    fecha_creacion: int | None = get_unix_now()
+    fecha_creacion: Optional[int] = get_unix_now()

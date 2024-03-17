@@ -1,5 +1,5 @@
 import datetime
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 from annotated_types import Gt
 from pydantic import BaseModel
 
@@ -22,7 +22,7 @@ class Paciente(BasePaciente):
     direccion: str
     religion: str
     sangre: Literal["A", "B", "AB", "O"]
-    usuario_id: int | None = None
+    usuario_id: Optional[int] = None
 
 
 def PacienteFactory(data: list[str]):
@@ -84,4 +84,4 @@ class ActualizarPaciente(BasePaciente):
     direccion: str
     religion: str
     sangre: Literal["A", "B", "AB", "O"]
-    usuario_id: int | None = None
+    usuario_id: Optional[int] = None
