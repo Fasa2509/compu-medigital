@@ -1,5 +1,4 @@
-import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 from src.helpers.dates import get_datetime_from_unix, get_then_unix, get_unix_now
@@ -18,7 +17,7 @@ class Diagnostico(BaseDiagnostico):
     paciente_id: int
 
 
-def DiagnosticoFactory(data: list[str]):
+def DiagnosticoFactory(data: List[str]):
     id, afectacion, observaciones, fecha_creacion, consulta_id, paciente_id = data
 
     return {
@@ -31,7 +30,7 @@ def DiagnosticoFactory(data: list[str]):
     }
 
 
-def DiagnosticoFactoryDates(data: list[str]):
+def DiagnosticoFactoryDates(data: List[str]):
     id, afectacion, observaciones, fecha_creacion, consulta_id, paciente_id = data
 
     return {

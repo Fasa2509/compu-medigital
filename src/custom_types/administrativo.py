@@ -1,6 +1,5 @@
 import datetime
-from typing import Optional
-from typing import Annotated
+from typing import Annotated, Optional, List
 from annotated_types import Gt
 from pydantic import BaseModel
 
@@ -25,7 +24,7 @@ class Administrativo(BaseAdministrativo):
     medico_id: int
 
 
-def AdministrativoFactory(data: list[str]):
+def AdministrativoFactory(data: List[str]):
     id, nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion, oficina, medico_id = data
 
     return {
@@ -42,7 +41,7 @@ def AdministrativoFactory(data: list[str]):
     }
 
 
-def AdministrativoFactoryDates(data: list[str]):
+def AdministrativoFactoryDates(data: List[str]):
     id, nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion, oficina, medico_id = data
 
     date = get_datetime_from_unix(int(nacimiento))

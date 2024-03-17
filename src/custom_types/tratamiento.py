@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 
@@ -35,7 +35,7 @@ class Tratamiento(BaseTratamiento):
     diagnostico_id: int
 
 
-def TratamientoFactory(data: list[str]):
+def TratamientoFactory(data: List[str]):
     id, indicaciones, duracion, diagnostico_id = data
 
     return {
@@ -46,7 +46,7 @@ def TratamientoFactory(data: list[str]):
     }
 
 
-def TratamientoFactoryDates(data: list[str]):
+def TratamientoFactoryDates(data: List[str]):
     id, indicaciones, duracion, diagnostico_id = data
 
     duracion = display_time(duracion) if duracion else "---"

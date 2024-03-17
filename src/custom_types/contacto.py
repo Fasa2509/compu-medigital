@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, List
 from pydantic import BaseModel
 
 
@@ -18,7 +18,7 @@ class Contacto(BaseContacto):
     paciente_id: int
 
 
-def ContactoFactory(data: list[str]):
+def ContactoFactory(data: List[str]):
     id, nombre, ci, correo, relacion, telefono, genero, nacimiento = data
 
     return {

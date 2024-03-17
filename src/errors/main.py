@@ -1,3 +1,4 @@
+from typing import List
 from enum import Enum
 
 from src.custom_types.Api import ApiResponse
@@ -23,7 +24,7 @@ EXCEPTION_NAMES = {
 
 
 class CustomException(Exception):
-    def __init__(self, message: list[str], errorCode: int = 400, *args: object):
+    def __init__(self, message: List[str], errorCode: int = 400, *args: object):
         super().__init__(*args)
         self.message = message
         self.errorCode = errorCode
@@ -31,31 +32,31 @@ class CustomException(Exception):
 
 
 class ConnectionException(CustomException):
-    def __init__(self, message: list[str], errorCode: int = 400, *args: object):
+    def __init__(self, message: List[str], errorCode: int = 400, *args: object):
         super().__init__(message, errorCode, *args)
         self.name = LocalExceptions.ConnectionException
 
 
 class DbException(CustomException):
-    def __init__(self, message: list[str], errorCode: int = 400, *args: object):
+    def __init__(self, message: List[str], errorCode: int = 400, *args: object):
         super().__init__(message, errorCode, *args)
         self.name = LocalExceptions.DbException
 
 
 class ParsingException(CustomException):
-    def __init__(self, message: list[str], errorCode: int = 400, *args: object):
+    def __init__(self, message: List[str], errorCode: int = 400, *args: object):
         super().__init__(message, errorCode, *args)
         self.name = LocalExceptions.ParsingException
 
 
 class AuthException(CustomException):
-    def __init__(self, message: list[str], errorCode: int = 400, *args: object):
+    def __init__(self, message: List[str], errorCode: int = 400, *args: object):
         super().__init__(message, errorCode, *args)
         self.name = LocalExceptions.AuthException
 
 
 class ValidationException(CustomException):
-    def __init__(self, message: list[str], errorCode: int = 400, *args: object):
+    def __init__(self, message: List[str], errorCode: int = 400, *args: object):
         super().__init__(message, errorCode, *args)
         self.name = LocalExceptions.ValidationException
 
