@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional
+from typing import Optional, Union
 from pydantic import BaseModel, field_validator
 
 from src.helpers.dates import get_datetime_from_unix, get_unix_now
@@ -19,7 +19,7 @@ class Consulta(BaseConsulta):
     administrativo_id: int
 
 
-def ConsultaFactory(data: list[str]) -> dict[str, str | int | datetime.datetime]:
+def ConsultaFactory(data: list[str]) -> dict[str, Union[str, int, datetime.datetime]]:
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 
     return {
