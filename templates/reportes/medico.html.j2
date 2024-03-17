@@ -1,0 +1,95 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Médico
+{% endblock title %}
+{% block children %}
+<section class="main-container">
+    {% if medico_info %}
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Reporte de médico</h3>
+    <div class="card">
+        <p><b>ID: </b>{{medico_info.id}}</p>
+        <p><b>Nombre: </b>{{medico_info.nombre}}</p>
+        <p><b>C.I.: </b>{{medico_info.ci}}</p>
+        <p><b>Teléfono: </b>{{medico_info.telefono}}</p>
+        <p><b>Correo electrónico: </b>{{medico_info.correo}}</p>
+        <p><b>Género: </b>{{medico_info.genero}}</p>
+        <p><b>Nacimiento: </b>{{medico_info.nacimiento}}</p>
+        <p><b>Especialidad: </b>{{medico_info.especialidad}}</p>
+        <p><b>Este médico se unió a Medigital el </b>{{medico_info.fecha_creacion}}</p>
+    </div>
+
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Administrativo</h3>
+    {% if administrativo_info %}
+    <div class="card">
+        <p><b>ID: </b>{{administrativo_info.id}}</p>
+        <p><b>Nombre: </b>{{administrativo_info.nombre}}</p>
+        <p><b>C.I.: </b>{{administrativo_info.ci}}</p>
+        <p><b>Teléfono: </b>{{administrativo_info.telefono}}</p>
+        <p><b>Correo electrónico: </b>{{administrativo_info.correo}}</p>
+        <p><b>Género: </b>{{administrativo_info.genero}}</p>
+        <p><b>Nacimiento: </b>{{administrativo_info.nacimiento}}</p>
+        <p><b>Oficina: </b>{{administrativo_info.oficina}}</p>
+        <p><b>Este personal administrativo se unió a Medigital el </b>{{administrativo_info.fecha_creacion}}</p>
+    </div>
+    {% else %}
+    <div class="card">
+        <p>Parece que no hay un administrativo asociado a este médico</p>
+    </div>
+    {% endif %}
+
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Consultas</h3>
+    {% if consultas|length ==0 %}
+    <div class="card">
+        <p>Parece que no hay consultas asociadas a este médico</p>
+    </div>
+    {% else %}
+    <section class="v-flex-container">
+        {% for consulta in consultas %}
+        <div class="card">
+            <p><b>ID: </b>{{consulta.id}}</p>
+            <p><b>Fecha de consulta: </b>{{consulta.fecha_consulta}}</p>
+            <p><b>Fecha de creación: </b>{{consulta.fecha_creacion}}</p>
+            <p><b>Coste: </b>{{consulta.coste}}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Tratamientos</h3>
+    {% if tratamientos|length ==0 %}
+    <div class="card">
+        <p>Parece que no hay tratamientos asociados a este médico</p>
+    </div>
+    {% else %}
+    <section class="v-flex-container">
+        {% for tratamiento in tratamientos %}
+        <div class="card">
+            <p><b>ID: </b>{{tratamiento.id}}</p>
+            <p><b>Indicaciones: </b>{{tratamiento.indicaciones}}</p>
+            <p><b>Duración: </b>{{tratamiento.duracion}}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+    {% else %}
+    <h3 style="margin: 1rem 2rem;">Vaya, no se encontró médico por esa C.I.</h3>
+    {% endif %}
+    <div style="min-height: 5rem; display: flex; align-items: center">
+        <a id="backTo" href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver
+            atrás</a>
+    </div>
+</section>
+<script>
+    const $linkBack = document.querySelector("#backTo")
+
+    const backTo = new URLSearchParams(window.location.search).get("backTo") || "/";
+
+    if (backTo) $linkBack.setAttribute("href", window.location.origin + backTo)
+</script>
+<style>
+    .main-container {
+        padding: 1rem 2rem;
+    }
+</style>
+{% endblock children %}

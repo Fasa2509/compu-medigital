@@ -1,3 +1,4 @@
+import datetime
 from typing import Annotated
 from annotated_types import Gt
 from pydantic import BaseModel
@@ -40,6 +41,32 @@ def AdministrativoFactory(data: list[str]):
     }
 
 
+def AdministrativoFactoryDates(data: list[str]):
+    id, nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion, oficina, medico_id = data
+
+    date = get_datetime_from_unix(int(nacimiento))
+
+    now = datetime.datetime.now()
+
+    less = 1 if int(date.month) > int(now.month) or int(
+        date.day) > int(now.day) else 0
+
+    years = now.year - date.year - less
+
+    return {
+        "id": id,
+        "nombre": nombre,
+        "ci": ci,
+        "telefono": telefono,
+        "correo": correo,
+        "genero": genero,
+        "nacimiento": f"{date.date()}, {years} años",
+        "fecha_creacion": get_datetime_from_unix(int(fecha_creacion)).date().strftime("%d/%m/%Y"),
+        "oficina": oficina,
+        "medico_id": medico_id,
+    }
+
+
 class NuevoAdministrativo(BaseAdministrativo):
     oficina: str
     medico_id: int
@@ -50,9 +77,5 @@ class ActualizarAdministrativo(BaseAdministrativo):
     nombre: str
     ci: Annotated[int, Gt(1_000_000)]
     telefono: str
-    correo: str
-    genero: str
-    nacimiento: int
     oficina: str
-    usuario_id: int
-    medico_id: int
+    usuario_id: int | None = None

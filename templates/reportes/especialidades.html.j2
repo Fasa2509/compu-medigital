@@ -1,0 +1,35 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Especialidades más requeridas
+{% endblock title %}
+
+{% block children %}
+<section class="main-container">
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Especialidades más requeridas</h3>
+    <div class="card">
+        <section class="especialidades-container">
+            {% for especialidad in especialidades %}
+            <span>{{especialidad}}</span>
+            {% endfor %}
+        </section>
+    </div>
+    <div style="min-height: 5rem; display: flex; align-items: center">
+        <a id="backTo" href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver
+            atrás</a>
+    </div>
+</section>
+<script>
+    <div style="min-height: 5rem; display: flex; align-items: center">
+        <a id="backTo" href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver
+            atrás</a>
+    </div>
+</script>
+<style>
+    .especialidades-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+</style>
+{% endblock children %}

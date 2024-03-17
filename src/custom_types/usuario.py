@@ -10,7 +10,7 @@ class BaseUsuario(BaseModel):
 
 
 class Usuario(BaseUsuario):
-    id: str | int
+    id: int
     nombre: str
     ci: Annotated[int, Gt(1_000_000)]
     telefono: str
@@ -18,11 +18,6 @@ class Usuario(BaseUsuario):
     genero: str
     nacimiento: int
     fecha_creacion: int
-
-    @field_validator("id", mode="before")
-    @classmethod
-    def transform_id(cls, val: str) -> int:
-        return int(val)
 
 
 class NuevoUsuario(BaseUsuario):
@@ -33,12 +28,10 @@ class NuevoUsuario(BaseUsuario):
     genero: Literal["F", "M", "O"]
     nacimiento: Annotated[int, Gt(0)]
     fecha_creacion: int | None = get_unix_now()
+    clave: str | None = None
 
 
 class ActualizarUsuario(BaseUsuario):
     nombre: str
     ci: Annotated[int, Gt(1_000_000)]
     telefono: str
-    correo: str
-    genero: str
-    nacimiento: int

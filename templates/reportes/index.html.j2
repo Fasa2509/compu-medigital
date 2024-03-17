@@ -1,0 +1,126 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Reportes
+{% endblock title %}
+{% block children %}
+<section class="main-container">
+    <h2 style="font-size: 1.8rem;">Reportes generales</h2>
+    <p style="margin: 1rem;">En Medigital estamos a la vanguardia de la tecnología, por eso tenemos acceso a los datos
+        de todos nuestros
+        usuarios para interés del público. ¡Escoge aquí qué quieres averiguar!</p>
+    <form class="medico-form">
+        <h3 style="font-size: 1.4rem; font-weight: 500; color: gray;">Buscar médico</h3>
+        <div class="input-container-2">
+            <label class="label" for="CI-medico">C.I. Médico</label>
+            <div class="search-container">
+                <input id="CI-medico" class="input" type="number" min="0" min="1000000">
+                <a id="link-medico" class="menu-link search-link bg-third-hover" href="/"
+                    style="display: inline-block; pointer-events: none;">Buscar</a>
+            </div>
+        </div>
+    </form>
+
+    <form class="paciente-form">
+        <h3 style="font-size: 1.4rem; font-weight: 500; color: gray;">Buscar paciente</h3>
+        <div class="input-container-2">
+            <label class="label" for="CI-paciente">C.I. Paciente</label>
+            <div class="search-container">
+                <input id="CI-paciente" class="input" type="number" style="width: ;" min="0" min="1000000">
+                <a id="link-paciente" class="menu-link search-link bg-third-hover" href="/"
+                    style="display: inline-block; pointer-events: none;">Buscar</a>
+            </div>
+        </div>
+    </form>
+
+    <div class="v-flex-container">
+        <a class="menu-link bg-secondary" href="/reporte/especialidades?backTo=/reportes">Especialidades más
+            solicitadas</a>
+        <a class="menu-link bg-secondary" href="/reporte/medicos_malos?backTo=/reportes">Médicos con pacientes
+            frecuentes</a>
+        <a class="menu-link bg-secondary" href="/reporte/tratamientos?backTo=/reportes">Tratamientos efectivos</a>
+    </div>
+
+    <div class="card" style="margin: 1rem">
+        <span>El diagnóstico más frecuente hasta la fecha ha sido <b>{{afectacion[1]}}</b> con un total de
+            {{afectacion[0]}}
+            casos.</span>
+    </div>
+</section>
+<script>
+    const $inputPaciente = document.querySelector("#CI-paciente")
+    const $inputMedico = document.querySelector("#CI-medico")
+    const $linkPaciente = document.querySelector("#link-paciente")
+    const $linkMedico = document.querySelector("#link-medico")
+
+    document.querySelectorAll("form").forEach((form) => form.addEventListener("submit", function (event) {
+        event.preventDefault()
+    }))
+
+    $linkPaciente.addEventListener("click", (e) => {
+        const ci = Number(e.target.href.split("/").at(-1));
+        if (isNaN(ci) || ci < 1000000) {
+            window.alert("La cédula no es válida")
+            e.preventDefault()
+        }
+    })
+
+    $linkMedico.addEventListener("click", (e) => {
+        const ci = Number(e.target.href.split("/").at(-1));
+        if (isNaN(ci) || ci < 1000000) {
+            window.alert("La cédula no es válida")
+            e.preventDefault()
+        }
+    })
+
+    $inputPaciente.addEventListener("keyup", (e) => {
+        if (e.target.value.length === 0) {
+            $linkPaciente.style.pointerEvents = "none"
+        } else {
+            $linkPaciente.style.pointerEvents = "all"
+        }
+        $linkPaciente.setAttribute("href", "/reporte/paciente/" + e.target.value)
+    })
+
+    $inputMedico.addEventListener("keyup", (e) => {
+        if (e.target.value.length === 0) {
+            $linkMedico.style.pointerEvents = "none"
+        } else {
+            $linkMedico.style.pointerEvents = "all"
+        }
+        $linkMedico.setAttribute("href", "/reporte/medico/" + e.target.value)
+    })
+</script>
+<style>
+    form {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 4px;
+        box-shadow: 0 0 12px -9px #343434;
+        margin-bottom: 1rem;
+        transition: box-shadow 300ms ease;
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: flex-start;
+        column-gap: 1rem;
+    }
+
+    .search-container input {
+        flex-grow: 1;
+        max-width: 400px;
+    }
+
+    .search-link {
+        /*width: 100%;*/
+        text-align: center;
+        display: inline-block;
+    }
+
+    form:hover,
+    form:focus-within {
+        box-shadow: 0 0 12px -6px #343434;
+    }
+</style>
+{% endblock children %}

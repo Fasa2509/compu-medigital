@@ -1,6 +1,7 @@
+import datetime
 from pydantic import BaseModel
 
-from src.helpers.dates import get_then_unix, get_unix_now
+from src.helpers.dates import get_datetime_from_unix, get_then_unix, get_unix_now
 
 
 class BaseDiagnostico(BaseModel):
@@ -24,6 +25,19 @@ def DiagnosticoFactory(data: list[str]):
         "afectacion": afectacion,
         "observaciones": observaciones,
         "fecha_creacion": fecha_creacion,
+        "consulta_id": consulta_id,
+        "paciente_id": paciente_id,
+    }
+
+
+def DiagnosticoFactoryDates(data: list[str]):
+    id, afectacion, observaciones, fecha_creacion, consulta_id, paciente_id = data
+
+    return {
+        "id": id,
+        "afectacion": afectacion,
+        "observaciones": observaciones,
+        "fecha_creacion": get_datetime_from_unix(int(fecha_creacion)).strftime("%d/%m%Y, %H:%M:%S"),
         "consulta_id": consulta_id,
         "paciente_id": paciente_id,
     }

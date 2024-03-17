@@ -1,0 +1,126 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Crear consulta
+{% endblock title %}
+{% block children %}
+<section class="login-form-container card">
+    <div class="img-container login-img">
+        <img src="{{url_for('static', filename='icon-1.jpeg')}}" alt="Imagen">
+    </div>
+    <form class="form">
+        <h3 style="font-size: 2rem; font-weight: 500; text-align: center;">Crear consulta</h3>
+        <div class="input-container">
+            <label class="label" for="fecha">Fecha de consulta</label>
+            <input id="fecha" class="input" type="date" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="coste">Coste</label>
+            <input id="coste" class="input" type="number" required>
+        </div>
+
+        <textarea id="util-info" style="display: none;">{{session_info}}</textarea>
+
+        <input id="medico-id" type="number" style="display: none;" value="{{ medico_id }}">
+        <input id="administrativo-id" type="number" style="display: none;" value="{{ administrativo_id }}">
+
+        <button class="button bg-secondary" type="submit">Crear consulta</button>
+    </form>
+</section>
+<script>
+    const $util_info = document.querySelector("#util-info");
+
+    console.log($util_info)
+    const userInfo = JSON.parse($util_info.value)
+
+
+    const $coste = document.querySelector("#coste");
+    const $fecha = document.querySelector("#fecha");
+    const $medico_id = document.querySelector("#medico-id");
+    const $administrativo_id = document.querySelector("#administrativo-id");
+
+    const $form = document.querySelector("form");
+
+    $form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        let body = {
+            medico_id: $medico_id.value,
+            administrativo_id: $administrativo_id.value || 1,
+            paciente_id: userInfo.id,
+            fecha_consulta: new Date($fecha.value).getTime() / 1000,
+            coste: $coste.value,
+        }
+
+        console.log(body)
+
+        // TODO
+        const res = await fetch("http://localhost:5000/api/consulta", {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => res)
+            .catch((err) => {
+                window.alert("No se pudo crear la consulta")
+                console.log(err)
+            })
+
+        const backTo = new URLSearchParams(window.location.search).get("backTo") || "/"
+
+        if (!res.error) {
+            window.alert("La consulta fue creada")
+            window.location.replace(window.location.origin + backTo)
+        }
+    })
+</script>
+<style>
+    .login-link {
+        display: none;
+    }
+
+    .form {
+        flex-grow: 1;
+    }
+
+    .login-form-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div.login-img {
+        flex-grow: 1;
+        display: none;
+        max-width: 50%;
+        appearance: 589/321;
+    }
+
+    .login-img {
+        object-fit: cover;
+    }
+
+    .login-form-container form {
+        padding: 1rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .login-form-container {
+            flex-direction: row;
+        }
+
+        div.login-img {
+            display: block;
+        }
+
+        .login-form-container form {
+            flex-grow: 1;
+        }
+    }
+</style>
+{% endblock children %}

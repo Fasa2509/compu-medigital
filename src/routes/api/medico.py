@@ -1,5 +1,8 @@
 from flask import Blueprint, request
 
+from src.custom_types.consulta import ConsultaFactoryDates
+from src.custom_types.diagnostico import DiagnosticoFactoryDates
+from src.custom_types.tratamiento import TratamientoFactory
 from src.database.main import db_injection
 from src.custom_types.usuario import ActualizarUsuario, NuevoUsuario
 from src.custom_types.Api import ApiResponse, ApiResponsePayload
@@ -35,6 +38,65 @@ def obtener_medico(medico_ci: int):
         if not medico:
             raise DbException(["No se encontró el médico"])
 
+        administrativo = cursor.execute(
+            """SELECT
+            usuario.id as id,
+            usuario.nombre as nombre,
+            usuario.ci as ci,
+            usuario.telefono as telefono,
+            usuario.correo as correo,
+            usuario.genero as genero,
+            usuario.nacimiento as nacimiento,
+            usuario.fecha_creacion as fecha_creacion,
+            administrativo.oficina as oficina,
+            administrativo.medico_id as medico_id
+            FROM usuario INNER JOIN administrativo ON usuario.id = administrativo.usuario_id WHERE medico_id = (?)""", (medico[0],)).fetchone()
+
+        consultas = cursor.execute(
+            """SELECT
+            id,
+            fecha_consulta,
+            fecha_creacion,
+            coste,
+            paciente_id,
+            medico_id,
+            administrativo_id
+            FROM consulta
+            WHERE medico_id = (?)
+            """, (medico[0],)).fetchall()
+
+        diagnosticos = cursor.execute(
+            f"""SELECT
+            id,
+            afectacion,
+            observaciones,
+            fecha_creacion,
+            consulta_id,
+            paciente_id
+            FROM diagnostico
+            WHERE consulta_id in {tuple([el[0] for el in consultas])}
+            """,
+        ).fetchall()
+
+        tratamientos = cursor.execute(
+            f"""SELECT
+            id,
+            indicaciones,
+            duracion,
+            diagnostico_id
+            FROM tratamiento
+            WHERE diagnostico_id in {tuple([el[0] for el in diagnosticos])}
+            """,
+        ).fetchall()
+
+        consultas = [ConsultaFactoryDates(consulta) for consulta in consultas]
+
+        diagnosticos = [DiagnosticoFactoryDates(
+            diagnostico) for diagnostico in diagnosticos]
+
+        tratamientos = [TratamientoFactory(
+            tratamiento) for tratamiento in tratamientos]
+
         db.close()
 
         return ApiResponsePayload(error=False, message=["El médico fue obtenido"], payload={"medico": MedicoFactory(medico)}).__dict__, 200
@@ -48,11 +110,14 @@ def crear_medico():
         usuario = NuevoUsuario(**request.get_json())
         medico = NuevoMedico(**request.get_json())
 
+        if not usuario.clave or len(usuario.clave) < 8:
+            raise ValueError("La contraseña no es válida")
+
         db = db_injection()
 
         cursor = db.cursor()
 
-        cursor.execute("INSERT INTO usuario (nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion) VALUES (:nombre, :ci, :telefono, :correo, :genero, :nacimiento, :fecha_creacion)",
+        cursor.execute("INSERT INTO usuario (nombre, clave, ci, telefono, correo, genero, nacimiento, fecha_creacion) VALUES (:nombre, :clave, :ci, :telefono, :correo, :genero, :nacimiento, :fecha_creacion)",
                        usuario.__dict__)
 
         usuario_id = cursor.lastrowid
@@ -89,10 +154,7 @@ def actualizar_paciente():
         cursor.execute(f"""UPDATE usuario SET
                         nombre = :nombre,
                         ci = :ci,
-                        telefono = :telefono,
-                        correo = :correo,
-                        genero = :genero,
-                        nacimiento = :nacimiento
+                        telefono = :telefono
                         WHERE id = (SELECT usuario_id FROM medico WHERE id = {medico_id})""", usuario_info.__dict__)
 
         db.commit()

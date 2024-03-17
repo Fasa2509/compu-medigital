@@ -1,0 +1,66 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Tratamientos efectivos
+{% endblock title %}
+{% block children %}
+<section class="main-container">
+    {% if not tratamientos %}
+    <div class="card">
+        <p>Parece que no hubo un problema obteniendo los tratamientos</p>
+    </div>
+    {% else %}
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Reporte de tratamientos que han
+        resultado efectivos</h3>
+    <p style="margin: 1rem">Esta es una lista de aquellos tratamientos que hicieron que los pacientes no volviesen a
+        consulta en al menos un año.</p>
+    {% if tratamientos|length == 0 %}
+    <div class="card">
+        <p>Parece que aún no hay tratamientos efectivos</p>
+    </div>
+    {% else %}
+    <div class="tratamientos-container">
+        {% for tratamiento in tratamientos %}
+        <div class="card">
+            <p><b>ID: </b>{{tratamiento.id}}</p>
+            <p><b>Indicaciones: </b>{{tratamiento.indicaciones}}</p>
+            <p><b>Duración: </b>{{tratamiento.duracion}}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    <div style="min-height: 5rem; display: flex; align-items: center">
+        <a id="backTo" href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver
+            atrás</a>
+    </div>
+</section>
+<script>
+    const $linkBack = document.querySelector("#backTo")
+
+    const backTo = new URLSearchParams(window.location.search).get("backTo") || "/";
+
+    if (backTo) $linkBack.setAttribute("href", window.location.origin + backTo)
+</script>
+<style>
+    .main-container {
+        padding: 1rem 2rem;
+    }
+
+    .tratamientos-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .tratamientos-container {
+            grid-template-columns: repeat(2, minmax(350px, 1fr));
+        }
+    }
+</style>
+{% endblock children %}

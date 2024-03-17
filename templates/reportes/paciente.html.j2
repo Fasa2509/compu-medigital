@@ -1,0 +1,70 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Paciente
+{% endblock title %}
+{% block children %}
+<section class="main-container">
+    {% if paciente_info %}
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Historial médico de paciente</h3>
+    <div class="card">
+        <p><b>ID: </b>{{paciente_info.id}}</p>
+        <p><b>Nombre: </b>{{paciente_info.nombre}}</p>
+        <p><b>C.I.: </b>{{paciente_info.ci}}</p>
+        <p><b>Teléfono: </b>{{paciente_info.telefono}}</p>
+        <p><b>Correo electrónico: </b>{{paciente_info.correo}}</p>
+        <p><b>Género: </b>{{paciente_info.genero}}</p>
+        <p><b>Nacimiento: </b>{{paciente_info.nacimiento}}</p>
+        <p><b>Dirección: </b>{{paciente_info.direccion}}</p>
+        <p><b>Religión: </b>{{paciente_info.religion}}</p>
+        <p><b>Sangre: </b>{{paciente_info.sangre}}</p>
+        <p><b>Este paciente se unió a Medigital el </b>{{paciente_info.fecha_creacion}}</p>
+    </div>
+
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Consultas</h3>
+    {% if consultas|length == 0 %}
+    <div class="card">
+        <p>Parece que no hay consultas asociadas a este paciente</p>
+    </div>
+    {% else %}
+    <section class="v-flex-container">
+        {% for consulta in consultas %}
+        <div class="card">
+            <p><b>ID: </b>{{consulta.id}}</p>
+            <p><b>Fecha de consulta: </b>{{consulta.fecha_consulta}}</p>
+            <p><b>Fecha de creación: </b>{{consulta.fecha_creacion}}</p>
+            <p><b>Coste: </b>{{consulta.coste}}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Tratamientos</h3>
+    {% if tratamientos|length ==0 %}
+    <div class="card">
+        <p>Parece que no hay tratamientos asociados a este paciente</p>
+    </div>
+    {% else %}
+    <section class="v-flex-container">
+        {% for tratamiento in tratamientos %}
+        <div class="card">
+            <p><b>ID: </b>{{tratamiento.id}}</p>
+            <p><b>Indicaciones: </b>{{tratamiento.indicaciones}}</p>
+            <p><b>Duración: </b>{{tratamiento.duracion}}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+    {% else %}
+    <h3 style="margin: 1rem 2rem;">Vaya, no se encontró paciente por esa C.I.</h3>
+    {% endif %}
+    <div style="min-height: 5rem; display: flex; align-items: center">
+        <a href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver atrás</a>
+    </div>
+</section>
+<style>
+    .main-container {
+        padding: 1rem 2rem;
+    }
+</style>
+{% endblock children %}

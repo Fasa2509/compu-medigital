@@ -1,0 +1,108 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Iniciar sesión
+{% endblock title %}
+{% block children %}
+<section class="login-form-container card">
+    <div class="img-container login-img">
+        <img src="{{url_for('static', filename='long-img-3.jpeg')}}" alt="Imagen">
+    </div>
+    <form class="form">
+        <h3 style="font-size: 2rem; font-weight: 500; text-align: center;">Iniciar sesión</h3>
+        <div class="input-container">
+            <label class="label" for="correo">Correo electrónico</label>
+            <input id="correo" class="input" type="email" placeholder="Correo electrónico" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="clave">Contraseña</label>
+            <input id="clave" class="input" type="password" placeholder="Contraseña" required>
+        </div>
+
+        <button class="button">Entrar</button>
+        <a class="menu-link bg-secondary" href="/signup">Crear una cuenta</a>
+    </form>
+</section>
+<script>
+    const $form = document.querySelector("form");
+    const $correo = document.querySelector("#correo");
+    const $clave = document.querySelector("#clave");
+
+    $form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // TODO
+        const res = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            body: JSON.stringify({
+                correo: $correo.value,
+                clave: $clave.value,
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => res)
+            .catch((err) => {
+                window.alert("No se pudo iniciar sesión")
+                console.log(err)
+            })
+
+        const backTo = new URLSearchParams(window.location.search).get("backTo") || "/"
+
+        if (!res.error) window.location.replace(window.location.origin + backTo)
+    })
+</script>
+<style>
+    .login-link {
+        display: none;
+    }
+
+    .form {
+        flex-grow: 1;
+    }
+
+    .login-form-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div.login-img {
+        flex-grow: 1;
+        display: none;
+        max-width: 50%;
+        appearance: 589/321;
+    }
+
+    .login-img {
+        object-fit: cover;
+    }
+
+    .login-form-container form {
+        padding: 1rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .login-form-container {
+            flex-direction: row;
+        }
+
+        div.login-img {
+            display: block;
+        }
+
+        .login-form-container form {
+            flex-grow: 1;
+        }
+    }
+
+    body {
+        max-height: 100vh;
+        overflow-y: hidden;
+    }
+</style>
+{% endblock children %}

@@ -1,15 +1,97 @@
 {% extends "layout.html.j2" %}
 
-{% block children %}
 {% block title %} Compu Trabajo {% endblock title %}
-{% for usuario in users %}
-<div>
-    <span>ID: {{usuario[0]}}</span>
-    <span>Nombre: {{usuario[1]}}</span>
-    <span>Nacimiento: {{usuario[2]}}</span>
-    <span>Estatura: {{usuario[3]}}</span>
-</div>
-{% endfor %}
-{% if users|length < 3 %} <span>Whaos hay pocos usuarios</span>
-    {% endif %}
-    {% endblock children %}
+{% block children %}
+<section class="container">
+    <div class="img-container ic-4-1 full-width">
+        <img style="aspect-ratio: 10/3; object-position: 0% 20%"
+            src="{{ url_for('static', filename='long-img-1.jpeg') }}" alt="Imagen 1">
+    </div>
+    <section class="ps-container">
+        <p>Veniam aute laboris nostrud aliquip reprehenderit proident qui officia aute velit voluptate. Mollit ex dolore
+            dolore veniam laborum non elit occaecat amet eiusmod. Minim adipisicing ipsum dolore Lorem eu velit non ea
+            pariatur est ex cupidatat. Ad dolore commodo do Lorem culpa et dolor occaecat. Culpa ea excepteur nisi et ea
+            incididunt consequat culpa amet. Lorem eiusmod fugiat irure qui magna aliquip duis mollit non nulla.</p>
+
+        <p style="margin-top: 1rem">Eiusmod amet aliquip duis est excepteur excepteur amet. Quis qui veniam ex pariatur
+            magna ea culpa enim ea.
+            Excepteur est quis sint Lorem culpa incididunt tempor tempor proident ullamco duis eu. Fugiat do eu aute
+            consectetur voluptate Lorem aliquip deserunt aute. Eiusmod amet aliquip duis est excepteur excepteur amet.
+            Quis qui veniam ex pariatur
+            magna ea culpa enim ea.
+            Excepteur est quis sint Lorem culpa incididunt tempor tempor proident ullamco duis eu. Fugiat do eu aute
+            consectetur voluptate Lorem aliquip deserunt aute.</p>
+    </section>
+
+    <main class="main">
+        <div class="img-container ic-5-2" style="width: 100%">
+            <img src="{{ url_for('static', filename='index-img-1.jpeg') }}" alt="Imagen index 1">
+        </div>
+        <div class="text">
+            <h3>Misión</h3>
+            <p>aaaMagna duis fugiat mollit occaecat nostrud cupidatat. Ut proident est irure eu qui et officia anim
+                velit
+                laboris ea deserunt aute cupidatat. Fugiat amet exercitation occaecat Lorem reprehenderit anim eiusmod.
+            </p>
+        </div>
+        <div class="img-container ic-5-2 reorder" style="width: 100%;">
+            <img style="object-position: bottom;" src="{{ url_for('static', filename='index-img-2.jpeg') }}"
+                alt="Imagen index 2">
+        </div>
+        <div class="text">
+            <h3>Visión</h3>
+            <p>Magna duis fugiat mollit occaecat nostrud cupidatat. Ut proident est irure eu qui et officia anim velit
+                laboris ea deserunt aute cupidatat. Fugiat amet exercitation occaecat Lorem reprehenderit anim eiusmod.
+            </p>
+        </div>
+        <div class="img-container ic-5-2 reorder" style="width: 100%">
+            <img src="{{ url_for('static', filename='index-img-3.jpeg') }}" alt="Imagen index 3">
+        </div>
+        <div class="text reorder">
+            <h3>Logros</h3>
+            <p>Magna duis fugiat mollit occaecat nostrud cupidatat. Ut proident est irure eu qui et officia anim velit
+                laboris ea deserunt aute cupidatat. Fugiat amet exercitation occaecat Lorem reprehenderit anim eiusmod.
+            </p>
+        </div>
+    </main>
+</section>
+<style>
+    .main {
+        display: grid;
+        grid-template-rows: repeat(max-content, 6);
+    }
+
+    .main>* {
+        order: 1;
+    }
+
+    .main .text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 1rem;
+        text-align: justify;
+    }
+
+    .ps-container {
+        padding: 2rem;
+        text-align: justify;
+    }
+
+    @media screen and (min-width: 776px) {
+        .main {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .reorder {
+            order: 2;
+        }
+
+        .ps-container {
+            text-align: center;
+            padding: 3.5rem;
+        }
+    }
+</style>
+{% endblock children %}

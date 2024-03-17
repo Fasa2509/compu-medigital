@@ -1,0 +1,231 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Crear cuenta
+{% endblock title %}
+{% block children %}
+<section class="login-form-container card">
+    <div class="img-container login-img">
+        <img src="{{url_for('static', filename='icon-1.jpeg')}}" alt="Imagen">
+    </div>
+    <form class="form">
+        <h3 style="font-size: 2rem; font-weight: 500; text-align: center;">Crear cuenta</h3>
+        <div class="input-container">
+            <label class="label" for="nombre">Nombre completo</label>
+            <input id="nombre" class="input" type="text" placeholder="Nombre" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="cedula">Cédula de Identidad</label>
+            <input id="cedula" class="input" type="number" placeholder="C.I." required min="0" max="35000000">
+        </div>
+        <div class="input-container">
+            <label class="label" for="telefono">Teléfono</label>
+            <input id="telefono" class="input" type="text" placeholder="Número de teléfono" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="correo">Correo electrónico</label>
+            <input id="correo" class="input" type="email" placeholder="Correo electrónico" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="clave">Contraseña</label>
+            <input id="clave" class="input" type="password" placeholder="Contraseña" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="genero">Género</label>
+            <select name="genero" id="genero">
+                <option value="F">Mujer</option>
+                <option value="M">Hombre</option>
+                <option value="O">Otro</option>
+            </select>
+        </div>
+        <div class="input-container">
+            <label class="label" for="fecha">Fecha de nacimiento</label>
+            <input id="fecha" class="input" type="date" required>
+        </div>
+
+        <div class="input-container">
+            <label class="label" for="tipo">Eres...</label>
+            <select name="tipo" id="tipo">
+                <option value="paciente">Paciente</option>
+                <option value="medico">Médico</option>
+                <option value="administrativo">Administrativo</option>
+            </select>
+        </div>
+
+        <div id="paciente-info">
+            <div class="input-container">
+                <label class="label" for="direccion">Dirección</label>
+                <textarea id="direccion" class="input" type="date" style="resize: none;border-radius: 6px"
+                    rows="4"></textarea>
+            </div>
+            <div class="input-container">
+                <label class="label" for="religion">Religión</label>
+                <input id="religion" class="input" type="text" placeholder="Religión">
+            </div>
+            <div class="input-container">
+                <label class="label" for="sangre">Tipo de sangre</label>
+                <input id="sangre" class="input" type="text" placeholder="Tipo de sangre">
+            </div>
+        </div>
+
+        <div id="medico-info" style="display: none">
+            <div class="input-container">
+                <label class="label" for="especialidad">Especialidad</label>
+                <input id="especialidad" class="input" type="text" placeholder="Especialidad">
+            </div>
+        </div>
+
+        <div id="administrativo-info" style="display: none">
+            <div class="input-container">
+                <label class="label" for="oficina">Oficina</label>
+                <input id="oficina" class="input" type="text" placeholder="Oficina">
+            </div>
+            <div class="input-container">
+                <label class="label" for="medico-id">ID de médico</label>
+                <input id="medico-id" class="input" type="number" placeholder="ID del médico con el que trabaja">
+            </div>
+        </div>
+
+        <button class="button bg-secondary" type="submit">Crear una cuenta</button>
+    </form>
+</section>
+<script>
+    const $paciente_info = document.querySelector("#paciente-info");
+    const $medico_info = document.querySelector("#medico-info");
+    const $administrativo_info = document.querySelector("#administrativo-info");
+    const $tipo = document.querySelector("#tipo");
+    const $direccion = document.querySelector("#direccion");
+    const $religion = document.querySelector("#religion");
+    const $sangre = document.querySelector("#sangre");
+    const $especialidad = document.querySelector("#especialidad");
+    const $oficina = document.querySelector("#oficina");
+    const $medico_id = document.querySelector("#medico-id");
+
+    $tipo.addEventListener("change", async (event) => {
+        if (event.target.value === "paciente") {
+            $medico_info.style.display = "none";
+            $administrativo_info.style.display = "none";
+            $paciente_info.style.display = "block";
+        } else if (event.target.value === "medico") {
+            $paciente_info.style.display = "none";
+            $administrativo_info.style.display = "none";
+            $medico_info.style.display = "block";
+        } else if (event.target.value === "administrativo") {
+            $paciente_info.style.display = "none";
+            $medico_info.style.display = "none";
+            $administrativo_info.style.display = "block";
+        }
+    })
+
+    const $form = document.querySelector("form");
+    const $nombre = document.querySelector("#nombre");
+    const $cedula = document.querySelector("#cedula");
+    const $telefono = document.querySelector("#telefono");
+    const $correo = document.querySelector("#correo");
+    const $clave = document.querySelector("#clave");
+    const $genero = document.querySelector("#genero");
+    const $fecha = document.querySelector("#fecha");
+
+    $form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        let body = {
+            nombre: $nombre.value,
+            ci: $cedula.value,
+            telefono: $telefono.value,
+            correo: $correo.value,
+            clave: $clave.value,
+            genero: $genero.value,
+            nacimiento: new Date($fecha.value).getTime() / 1000,
+        }
+
+        if ($tipo.value === "paciente") {
+            body = {
+                ...body,
+                direccion: $direccion.value,
+                religion: $religion.value,
+                sangre: $sangre.value,
+            }
+        } else if ($tipo.value === "medico") {
+            body = {
+                ...body,
+                especialidad: $especialidad.value,
+            }
+        } else if ($tipo.value === "administrativo") {
+            body = {
+                ...body,
+                oficina: $oficina.value,
+                medico_id: $medico_id.value,
+            }
+        }
+
+        // TODO
+        const res = await fetch(`http://localhost:5000/api/${$tipo.value}`, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => res)
+            .catch((err) => {
+                window.alert("No se pudo crear el usuario")
+                console.log(err)
+            })
+
+        const backTo = new URLSearchParams(window.location.search).get("backTo") || "/"
+
+        if (!res.error) {
+            window.alert("El usuario fue creado")
+            window.location.replace(window.location.origin + "/login")
+        }
+    })
+</script>
+<style>
+    .login-link {
+        display: none;
+    }
+
+    .form {
+        flex-grow: 1;
+    }
+
+    .login-form-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div.login-img {
+        flex-grow: 1;
+        display: none;
+        max-width: 50%;
+        appearance: 589/321;
+    }
+
+    .login-img {
+        object-fit: cover;
+    }
+
+    .login-form-container form {
+        padding: 1rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .login-form-container {
+            flex-direction: row;
+        }
+
+        div.login-img {
+            display: block;
+        }
+
+        .login-form-container form {
+            flex-grow: 1;
+        }
+    }
+</style>
+{% endblock children %}

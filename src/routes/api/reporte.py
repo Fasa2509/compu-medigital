@@ -340,16 +340,11 @@ def obtener_reporte_tratamientos():
             db.close()
             return ApiResponse(error=False, message=["No se encontraron diágnosticos"]).__dict__, 200
 
-        print(diagnosticos)
-        print([diagnostico[0] for diagnostico in diagnosticos])
-
         tratamientos = cursor.execute(
             f"""SELECT id, indicaciones, duracion, diagnostico_id FROM tratamiento WHERE diagnostico_id in {tuple([diagnostico[0] for diagnostico in diagnosticos])}""").fetchall()
 
         tratamientos = [TratamientoFactory(
             tratamiento) for tratamiento in tratamientos]
-
-        # consultas = [consulta.__dict__ for consulta in consultas]
 
         db.close()
 

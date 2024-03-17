@@ -1,0 +1,191 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Actualizar mis datos
+{% endblock title %}
+{% block children %}
+<section class="login-form-container card">
+    <div class="img-container login-img">
+        <img src="{{url_for('static', filename='icon-1.jpeg')}}" alt="Imagen">
+    </div>
+    <form class="form">
+        <h3 style="font-size: 2rem; font-weight: 500; text-align: center;">Actualizar mis datos</h3>
+        <div class="input-container">
+            <label class="label" for="nombre">Nombre completo</label>
+            <input id="nombre" class="input" type="text" placeholder="Nombre" required>
+        </div>
+        <div class="input-container">
+            <label class="label" for="cedula">Cédula de Identidad</label>
+            <input id="cedula" class="input" type="number" placeholder="C.I." required min="0" max="35000000">
+        </div>
+        <div class="input-container">
+            <label class="label" for="telefono">Teléfono</label>
+            <input id="telefono" class="input" type="text" placeholder="Número de teléfono" required>
+        </div>
+
+        <textarea id="util-info" style="display: none;">{{session_info}}</textarea>
+
+        {% if session.direccion %}
+        <div id="paciente-info">
+            <div class="input-container">
+                <label class="label" for="direccion">Dirección</label>
+                <textarea id="direccion" class="input" type="date" style="resize: none;border-radius: 6px"
+                    rows="4"></textarea>
+            </div>
+            <div class="input-container">
+                <label class="label" for="religion">Religión</label>
+                <input id="religion" class="input" type="text" placeholder="Religión">
+            </div>
+            <div class="input-container">
+                <label class="label" for="sangre">Tipo de sangre</label>
+                <input id="sangre" class="input" type="text" placeholder="Tipo de sangre">
+            </div>
+        </div>
+        {% endif %}
+
+        {% if session.especialidad %}
+        <div id="medico-info" style="display: none">
+            <div class="input-container">
+                <label class="label" for="especialidad">Especialidad</label>
+                <input id="especialidad" class="input" type="text" placeholder="Especialidad">
+            </div>
+        </div>
+        {% endif %}
+
+        {% if session.oficina %}
+        <div id="administrativo-info" style="display: none">
+            <div class="input-container">
+                <label class="label" for="oficina">Oficina</label>
+                <input id="oficina" class="input" type="text" placeholder="Oficina">
+            </div>
+        </div>
+        {% endif %}
+
+        <button class="button bg-secondary" type="submit">Actualizar información</button>
+    </form>
+</section>
+<script>
+    const $util_info = document.querySelector("#util-info");
+
+    const userInfo = JSON.parse($util_info.value)
+
+    const $direccion = document.querySelector("#direccion");
+    const $religion = document.querySelector("#religion");
+    const $sangre = document.querySelector("#sangre");
+    const $especialidad = document.querySelector("#especialidad");
+    const $oficina = document.querySelector("#oficina");
+
+    const $form = document.querySelector("form");
+    const $nombre = document.querySelector("#nombre");
+    const $cedula = document.querySelector("#cedula");
+    const $telefono = document.querySelector("#telefono");
+
+    $nombre.value = userInfo.nombre;
+    $cedula.value = userInfo.ci;
+    $telefono.value = userInfo.telefono;
+
+    if ($direccion) {
+        $direccion.value = userInfo.direccion;
+        $religion.value = userInfo.religion;
+        $sangre.value = userInfo.sangre;
+    }
+
+    $form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        let body = {
+            id: userInfo.id,
+            nombre: $nombre.value,
+            ci: $cedula.value,
+            telefono: $telefono.value,
+        }
+
+        if ($direccion) {
+            body = {
+                ...body,
+                direccion: $direccion.value,
+                religion: $religion.value,
+                sangre: $sangre.value,
+            }
+        } else if ($especialidad) {
+            body = {
+                ...body,
+                especialidad: $especialidad.value,
+            }
+        } else if ($oficina) {
+            body = {
+                ...body,
+                oficina: $oficina.value,
+            }
+        }
+
+        // TODO
+        const res = await fetch(`http://localhost:5000/api/${$direccion ? "paciente" : $especialidad ? "medico" : "administrativo"}`, {
+            method: "PUT",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => res)
+            .catch((err) => {
+                window.alert("No se pudo actualizar el usuario")
+                console.log(err)
+            })
+
+        const backTo = new URLSearchParams(window.location.search).get("backTo") || "/"
+
+        if (!res.error) {
+            window.alert("El usuario fue actualizado")
+            window.location.replace(window.location.origin)
+        }
+    })
+</script>
+<style>
+    .login-link {
+        display: none;
+    }
+
+    .form {
+        flex-grow: 1;
+    }
+
+    .login-form-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div.login-img {
+        flex-grow: 1;
+        display: none;
+        max-width: 50%;
+        appearance: 589/321;
+    }
+
+    .login-img {
+        object-fit: cover;
+    }
+
+    .login-form-container form {
+        padding: 1rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .login-form-container {
+            flex-direction: row;
+        }
+
+        div.login-img {
+            display: block;
+        }
+
+        .login-form-container form {
+            flex-grow: 1;
+        }
+    }
+</style>
+{% endblock children %}

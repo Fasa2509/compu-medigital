@@ -4,7 +4,7 @@ from src.database.main import db_injection
 from src.custom_types.usuario import ActualizarUsuario, NuevoUsuario
 from src.custom_types.Api import ApiResponse, ApiResponsePayload
 from src.custom_types.paciente import ActualizarPaciente, NuevoPaciente, PacienteFactory
-from src.errors.main import ApiErrorHandler, DbException
+from src.errors.main import ApiErrorHandler, DbException, ValidationException
 
 
 bp = Blueprint("pacientes", __name__, template_folder="templates")
@@ -50,11 +50,14 @@ def crear_paciente():
         usuario = NuevoUsuario(**request.get_json())
         paciente = NuevoPaciente(**request.get_json())
 
+        if not usuario.clave or len(usuario.clave) < 8:
+            raise ValueError("La contraseña no es válida")
+
         db = db_injection()
 
         cursor = db.cursor()
 
-        cursor.execute("INSERT INTO usuario (nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion) VALUES (:nombre, :ci, :telefono, :correo, :genero, :nacimiento, :fecha_creacion)",
+        cursor.execute("INSERT INTO usuario (nombre, clave, ci, telefono, correo, genero, nacimiento, fecha_creacion) VALUES (:nombre, :clave, :ci, :telefono, :correo, :genero, :nacimiento, :fecha_creacion)",
                        usuario.__dict__)
 
         usuario_id = cursor.lastrowid
@@ -76,9 +79,8 @@ def actualizar_paciente():
     try:
         usuario_info = ActualizarUsuario(**request.get_json())
         paciente_info = ActualizarPaciente(**request.get_json())
-        paciente_id = paciente_info.id
 
-        print(paciente_info)
+        paciente_id = paciente_info.id
 
         db = db_injection()
 
@@ -93,10 +95,7 @@ def actualizar_paciente():
         cursor.execute(f"""UPDATE usuario SET
                         nombre = :nombre,
                         ci = :ci,
-                        telefono = :telefono,
-                        correo = :correo,
-                        genero = :genero,
-                        nacimiento = :nacimiento
+                        telefono = :telefono
                         WHERE id = (SELECT usuario_id FROM paciente WHERE id = {paciente_id})""", usuario_info.__dict__)
 
         db.commit()

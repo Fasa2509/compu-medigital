@@ -51,17 +51,20 @@ def crear_administrativo():
         administrativo = NuevoAdministrativo(**request.get_json())
         medico_id = administrativo.medico_id
 
+        if not usuario.clave or len(usuario.clave) < 8:
+            raise ValueError("La contraseña no es válida")
+
         db = db_injection()
 
         cursor = db.cursor()
 
         medicoExists = cursor.execute(
             "SELECT id FROM medico WHERE id = ?", (medico_id,)).fetchone()
-        print(medicoExists)
+
         if not medicoExists:
             raise DbException(["No se encontró el médico"])
 
-        cursor.execute("INSERT INTO usuario (nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion) VALUES (:nombre, :ci, :telefono, :correo, :genero, :nacimiento, :fecha_creacion)",
+        cursor.execute("INSERT INTO usuario (nombre, clave, ci, telefono, correo, genero, nacimiento, fecha_creacion) VALUES (:nombre, :clave, :ci, :telefono, :correo, :genero, :nacimiento, :fecha_creacion)",
                        usuario.__dict__)
 
         usuario_id = cursor.lastrowid
@@ -99,9 +102,6 @@ def actualizar_administrativo():
                         nombre = :nombre,
                         ci = :ci,
                         telefono = :telefono,
-                        correo = :correo,
-                        genero = :genero,
-                        nacimiento = :nacimiento
                         WHERE id = (SELECT usuario_id FROM administrativo WHERE id = {administrativo_id})""", usuario_info.__dict__)
 
         db.commit()

@@ -32,6 +32,20 @@ def ConsultaFactory(data: list[str]) -> dict[str, str | int | datetime.datetime]
     }
 
 
+def ConsultaFactoryDates(data: list[str]) -> dict[str, str | int | datetime.datetime]:
+    id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
+
+    return {
+        "id": id,
+        "fecha_consulta": get_datetime_from_unix(int(fecha_consulta)).strftime("%d/%m/%Y, %H:%M:%S"),
+        "fecha_creacion": get_datetime_from_unix(int(fecha_creacion)).strftime("%d/%m/%Y"),
+        "coste": coste,
+        "paciente_id": paciente_id,
+        "medico_id": medico_id,
+        "administrativo_id": administrativo_id,
+    }
+
+
 def ConsultaFactoryInt(data: list[str]) -> Consulta:
     id, fecha_consulta, fecha_creacion, coste, paciente_id, medico_id, administrativo_id = data
 

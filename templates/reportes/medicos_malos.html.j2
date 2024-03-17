@@ -1,0 +1,75 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Médicos Deficientes
+{% endblock title %}
+{% block children %}
+<section class="main-container">
+    {% if not medicos %}
+    <div class="card">
+        <p>Parece que no hubo un problema obteniendo los médicos</p>
+    </div>
+    {% else %}
+    <h3 style="margin: 1rem; font-size: 1.4rem; font-weight: 500; color: gray;">Reporte de médicos con pacientes
+        frecuentes</h3>
+    <p style="margin: 1rem">Esta es una lista de aquellos médicos con pacientes que volvieron en menos de un año.</p>
+
+    {% if medicos|length == 0 %}
+    <div class="card">
+        <p>Parece que aún no hay médicos en Medigital</p>
+    </div>
+    {% else %}
+    <div class="medicos-container">
+        {% for medico in medicos %}
+        <div class="card">
+            <p><b>ID: </b>{{medico.id}}</p>
+            <p><b>Nombre: </b>{{medico.nombre}}</p>
+            <p><b>C.I.: </b>{{medico.ci}}</p>
+            <p><b>Teléfono: </b>{{medico.telefono}}</p>
+            <p><b>Correo electrónico: </b>{{medico.correo}}</p>
+            <p><b>Género: </b>{{medico.genero}}</p>
+            <p><b>Nacimiento: </b>{{medico.nacimiento}}</p>
+            <p><b>Especialidad: </b>{{medico.especialidad}}</p>
+            <p><b>Este médico se unió a Medigital el </b>{{medico.fecha_creacion}}</p>
+            <a class="menu-link bg-secondary" href="/reporte/medico/{{ medico.ci }}?backTo=/reporte/medicos_malos"
+                style="margin-top: .5rem; display: block">Ver
+                historial</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    <div style="min-height: 5rem; display: flex; align-items: center">
+        <a id="backTo" href="/reportes" class="menu-link bg-third" style="width: max-content; margin: 1rem 2rem">Volver
+            atrás</a>
+    </div>
+</section>
+<script>
+    const $linkBack = document.querySelector("#backTo")
+
+    const backTo = new URLSearchParams(window.location.search).get("backTo") || "/";
+
+    if (backTo) $linkBack.setAttribute("href", window.location.origin + backTo)
+</script>
+<style>
+    .main-container {
+        padding: 1rem 2rem;
+    }
+
+    .medicos-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .medicos-container {
+            grid-template-columns: repeat(2, minmax(350px, 1fr));
+        }
+    }
+</style>
+{% endblock children %}

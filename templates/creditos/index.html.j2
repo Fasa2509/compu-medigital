@@ -1,0 +1,45 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Créditos
+{% endblock title %}
+{% block children %}
+<p style="margin: 2rem 2rem 0;">Sint cillum consectetur veniam magna dolor aliqua officia commodo quis consectetur.
+    Laboris
+    enim cupidatat minim
+    nisi. Sunt veniam labore adipisicing ut deserunt dolor do commodo eiusmod laboris pariatur.</p>
+<section class="credit-container">
+    <div class="text">
+        <h3>Realizado por...</h3>
+        <p>Do reprehenderit sint exercitation ad. Velit aute nulla id laborum fugiat. Sunt exercitation eiusmod in
+            reprehenderit laborum laborum ex cillum nostrud esse nostrud aliquip. Cupidatat mollit laboris elit non
+            proident anim. Sit officia mollit est ullamco nulla. Cupidatat consectetur eu fugiat proident officia velit.
+        </p>
+    </div>
+    <div class="text">
+        <h3>Corregido por...</h3>
+        <p>Do reprehenderit sint exercitation ad. Velit aute nulla id laborum fugiat. Sunt exercitation eiusmod in
+            reprehenderit laborum laborum ex cillum nostrud esse nostrud aliquip. Cupidatat mollit laboris elit non
+            proident anim. Sit officia mollit est ullamco nulla. Cupidatat consectetur eu fugiat proident officia velit.
+        </p>
+    </div>
+</section>
+<style>
+    .credit-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .credit-container .text {
+        padding: 2rem;
+        text-align: justify;
+    }
+
+    @media screen and (min-width: 776px) {
+        .credit-container {
+            flex-direction: row;
+        }
+    }
+</style>
+{% endblock children %}

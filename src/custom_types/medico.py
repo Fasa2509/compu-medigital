@@ -1,3 +1,4 @@
+import datetime
 from typing import Annotated
 from annotated_types import Gt
 from pydantic import BaseModel
@@ -38,6 +39,33 @@ def MedicoFactory(data: list[str]):
     }
 
 
+def MedicoFactoryDates(data: list[str]):
+    id, nombre, ci, telefono, correo, genero, nacimiento, fecha_creacion, especialidad = data
+
+    print(nacimiento)
+
+    date = get_datetime_from_unix(int(nacimiento))
+
+    now = datetime.datetime.now()
+
+    less = 1 if int(date.month) > int(now.month) or int(
+        date.day) > int(now.day) else 0
+
+    years = now.year - date.year - less
+
+    return {
+        "id": id,
+        "nombre": nombre,
+        "ci": ci,
+        "telefono": telefono,
+        "correo": correo,
+        "genero": genero,
+        "nacimiento": f"{date.date()}, {years} años",
+        "fecha_creacion": get_datetime_from_unix(int(fecha_creacion)).date().strftime("%d/%m/%Y"),
+        "especialidad": especialidad,
+    }
+
+
 class NuevoMedico(BaseMedico):
     especialidad: str
 
@@ -47,8 +75,5 @@ class ActualizarMedico(BaseMedico):
     nombre: str
     ci: Annotated[int, Gt(1_000_000)]
     telefono: str
-    correo: str
-    genero: str
-    nacimiento: int
     especialidad: str
-    usuario_id: int
+    usuario_id: int | None = None

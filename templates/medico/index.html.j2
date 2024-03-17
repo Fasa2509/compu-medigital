@@ -1,0 +1,49 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}
+Médicos
+{% endblock title %}
+{% block children %}
+<h2 style="font-size: 1.8rem; margin: 0 1rem; color: var(--secondary-color)">Médicos en Medigital <span
+        style="font-size: 3rem; height: 48px">♥</span></h2>
+{% if medicos|length == 0 %}
+<h3 style="margin: 1rem 2rem;">Vaya, no se encontraron médicos. Intente más tarde.</h3>
+{% else %}
+<section class="medicos_container">
+    {% for medico_info in medicos %}
+    <div class="card">
+        <p><b>ID: </b>{{medico_info.id}}</p>
+        <p><b>Nombre: </b>{{medico_info.nombre}}</p>
+        <p><b>C.I.: </b>{{medico_info.ci}}</p>
+        <p><b>Teléfono: </b>{{medico_info.telefono}}</p>
+        <p><b>Correo electrónico: </b>{{medico_info.correo}}</p>
+        <p><b>Género: </b>{{medico_info.genero}}</p>
+        <p><b>Nacimineto: </b>{{medico_info.nacimiento}}</p>
+        <p><b>Especialidad: </b>{{medico_info.especialidad}}</p>
+        <p><b>Este médico se unió a Medigital el </b>{{medico_info.fecha_creacion}}</p>
+        <a class="menu-link bg-third" href="/consulta?id={{ medico_info.id }}&backTo=/medicos"
+            style="width: 100%; margin-top: .5rem;">Crear
+            consulta</a>
+        <a class="menu-link bg-secondary" href="/reporte/medico/{{ medico_info.ci }}?backTo=/medicos"
+            style="width: 100%; margin-top: .5rem">Ver
+            historial</a>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
+<style>
+    .medicos_container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    @media screen and (min-width: 776px) {
+        .medicos_container {
+            grid-template-columns: repeat(2, minmax(350px, 1fr));
+        }
+    }
+</style>
+{% endblock children %}
